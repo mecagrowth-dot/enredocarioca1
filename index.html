@@ -1,0 +1,334 @@
+<title>Enredo Carioca I — Central do Proprietário</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F5EF; --surface:#FFFFFF; --surface-2:#FBFAF6; --border:#E2E4D9;
+    --ink:#1C2320; --ink-dim:#5C665F; --ink-faint:#8B958D;
+    --accent:#B8502F; --accent-ink:#FFFFFF; --accent-soft:#F3E2D9;
+    --success:#3E7A56; --success-bg:#E9F3EC;
+    --warning:#A8791F; --warning-bg:#FAF1DE;
+    --critical:#B23B3B; --critical-bg:#FAEAE8;
+    --shadow:0 1px 2px rgba(28,35,32,0.04), 0 6px 20px -8px rgba(28,35,32,0.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14191A; --surface:#1C2325; --surface-2:#212A2B; --border:#303B3A;
+      --ink:#EDEFE9; --ink-dim:#9CA79E; --ink-faint:#6D786F;
+      --accent:#E1804F; --accent-ink:#1C1210; --accent-soft:#3A281E;
+      --success:#72C296; --success-bg:#1D3327;
+      --warning:#E0AC52; --warning-bg:#392C15;
+      --critical:#E67B75; --critical-bg:#3A2220;
+      --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 28px -10px rgba(0,0,0,0.45);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14191A; --surface:#1C2325; --surface-2:#212A2B; --border:#303B3A;
+    --ink:#EDEFE9; --ink-dim:#9CA79E; --ink-faint:#6D786F;
+    --accent:#E1804F; --accent-ink:#1C1210; --accent-soft:#3A281E;
+    --success:#72C296; --success-bg:#1D3327;
+    --warning:#E0AC52; --warning-bg:#392C15;
+    --critical:#E67B75; --critical-bg:#3A2220;
+    --shadow:0 1px 2px rgba(0,0,0,0.2), 0 12px 28px -10px rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:"Work Sans", ui-sans-serif, system-ui, sans-serif; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:980px; margin:0 auto; padding:28px 20px 72px;}
+
+  .crossnav{display:flex; gap:14px; flex-wrap:wrap; align-items:center; font-family:"IBM Plex Mono", monospace; font-size:12px; padding-bottom:14px; margin-bottom:18px; color:var(--ink-faint); border-bottom:1px solid var(--border);}
+  .crossnav a{color:var(--ink-dim); text-decoration:none; display:flex; align-items:center; gap:5px;}
+  .crossnav a:hover{color:var(--accent);}
+  .crossnav .sep{color:var(--border);}
+
+  header.top{margin-bottom:26px;}
+  .eyebrow{font-family:"IBM Plex Mono", monospace; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin:0 0 10px;}
+  h1{font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:clamp(28px,4.4vw,38px); letter-spacing:-.01em; margin:0 0 10px; text-wrap:balance;}
+  header.top p{margin:0; color:var(--ink-dim); font-size:15px; max-width:62ch; line-height:1.6;}
+
+  .stats-row{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:14px; overflow:hidden; margin:22px 0;}
+  .stat{background:var(--surface); padding:16px 18px;}
+  .stat .n{font-family:"IBM Plex Mono", monospace; font-size:24px; font-weight:600; font-variant-numeric:tabular-nums; line-height:1;}
+  .stat .l{font-size:11.5px; color:var(--ink-dim); margin-top:6px; text-transform:uppercase; letter-spacing:.04em;}
+
+  .panel{background:var(--surface); border:1px solid var(--border); border-radius:16px; box-shadow:var(--shadow); overflow:hidden; margin-bottom:20px;}
+  .panel-head{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:16px 20px 14px; border-bottom:1px solid var(--border); flex-wrap:wrap;}
+  .panel-head h2{font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:19px; margin:0;}
+  .panel-head .meta{font-size:12px; color:var(--ink-faint); font-family:"IBM Plex Mono", monospace;}
+  .panel-body{padding:18px 20px;}
+
+  .tablewrap{overflow-x:auto;}
+  table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:700px;}
+  thead th{text-align:left; font-family:"IBM Plex Mono", monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); font-weight:600; padding:10px 16px; border-bottom:1px solid var(--border); background:var(--surface-2);}
+  tbody td{padding:13px 16px; border-bottom:1px solid var(--border); vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .guest{font-weight:600;}
+  .code{font-family:"IBM Plex Mono", monospace; font-size:12px; color:var(--ink-dim);}
+  .diff-flag{display:inline-flex; align-items:center; gap:5px; font-family:"IBM Plex Mono", monospace; font-size:11px; background:var(--warning-bg); color:var(--warning); padding:3px 8px; border-radius:100px; margin-top:4px;}
+  .proof-links{display:flex; flex-direction:column; gap:4px;}
+  .proof-links a{color:var(--accent); text-decoration:none; font-size:12px;}
+  .proof-links a:hover{text-decoration:underline;}
+
+  .cta-row{display:flex; gap:12px; flex-wrap:wrap; margin:0 0 22px;}
+  .cta{display:inline-flex; align-items:center; gap:8px; text-decoration:none; font-size:13.5px; font-weight:600; padding:10px 16px; border-radius:10px; border:1px solid var(--border); color:var(--ink); background:var(--surface); transition:border-color .15s, color .15s;}
+  .cta:hover{border-color:var(--accent); color:var(--accent);}
+  .cta.primary{background:var(--accent); color:var(--accent-ink); border-color:var(--accent);}
+  .cta.primary:hover{opacity:.92; color:var(--accent-ink);}
+  .cta svg{width:14px; height:14px;}
+
+  .terms-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:640px){.terms-grid{grid-template-columns:1fr;}}
+  .term{padding:2px 0;}
+  .term dt{font-family:"IBM Plex Mono", monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent); margin:0 0 4px;}
+  .term dd{margin:0 0 16px; font-size:13.5px; color:var(--ink); line-height:1.55;}
+
+  .alert-box{display:flex; gap:10px; align-items:flex-start; background:var(--warning-bg); border:1px solid color-mix(in srgb, var(--warning) 35%, var(--border)); border-radius:12px; padding:14px 16px; margin-bottom:20px;}
+  .alert-box svg{flex:none; margin-top:2px; color:var(--warning);}
+  .alert-box .t{font-weight:600; font-size:14px; margin-bottom:3px;}
+  .alert-box .d{font-size:13px; color:var(--ink-dim); line-height:1.55;}
+  .alert-box code{font-family:"IBM Plex Mono", monospace; font-size:12px; background:var(--surface); border:1px solid var(--border); padding:1px 5px; border-radius:5px;}
+
+  footer{margin-top:30px; padding-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--ink-faint); line-height:1.7;}
+  code.inline{font-family:"IBM Plex Mono", monospace; background:var(--surface-2); border:1px solid var(--border); padding:1px 5px; border-radius:5px;}
+
+  .doc-groups{display:grid; grid-template-columns:1fr 1fr; gap:22px 28px;}
+  @media (max-width:640px){.doc-groups{grid-template-columns:1fr;}}
+  .doc-group h3{font-family:"IBM Plex Mono", monospace; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-faint); margin:0 0 10px;}
+  .doc-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px;}
+  .doc-list li{border-bottom:1px dashed var(--border);}
+  .doc-list li:last-child{border-bottom:none;}
+  .doc-list a{display:flex; align-items:center; gap:9px; text-decoration:none; color:var(--ink); font-size:13.5px; padding:8px 2px; line-height:1.4;}
+  .doc-list a:hover{color:var(--accent);}
+  .doc-list a .ic{flex:none; width:17px; height:17px; color:var(--ink-faint);}
+  .doc-list a:hover .ic{color:var(--accent);}
+  .doc-list a .fname{flex:1;}
+  .doc-list a .arrow{flex:none; font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--ink-faint);}
+  .doc-note{display:flex; gap:10px; align-items:flex-start; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-top:18px; font-size:12.5px; color:var(--ink-dim); line-height:1.6;}
+  .doc-note svg{flex:none; margin-top:2px; color:var(--ink-faint);}
+</style>
+
+<div class="wrap">
+  <nav class="crossnav">
+    <a href="https://claude.ai/code/artifact/a38e381b-d224-4df4-95fb-8ebc24c346fb">🏡 Central Em Casa</a>
+    <span class="sep">·</span>
+    <a href="https://claude.ai/code/artifact/8a1bfc9a-0961-405c-ab72-d650bf0d525e">🏠 Painel Nossa Casa (operação completa)</a>
+    <span class="sep">·</span>
+    <a href="https://claude.ai/code/artifact/4fb5a12d-1571-47ea-905a-8345754b2df8">🔑 Enredo Carioca I (reservas/comprovantes)</a>
+  </nav>
+
+  <header class="top">
+    <p class="eyebrow">prestação de contas ao proprietário</p>
+    <h1>Enredo Carioca I — Central do Proprietário</h1>
+    <p>Unidade 309, Rua do Riachuelo 201, Centro/Lapa — Rio de Janeiro. Tudo que o Rafael precisa para acompanhar a gestão do apartamento em um só lugar: financeiro, comprovantes, arquivos e os termos do contrato de administração.</p>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat"><div class="n">3</div><div class="l">reservas registradas</div></div>
+    <div class="stat"><div class="n">R$ 2.741,27</div><div class="l">confirmado e pago (com comprovante)</div></div>
+    <div class="stat"><div class="n">R$ 967,70</div><div class="l">a receber — agendado p/ 20/11</div></div>
+  </div>
+
+  <div class="cta-row">
+    <a class="cta primary" href="https://docs.google.com/spreadsheets/d/1zDT_9Mqo3MYmwlx9Yb18A7exLbuTqUuuvgGuU8VnHRo/edit" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg>
+      Abrir planilha financeira completa
+    </a>
+    <a class="cta" href="https://drive.google.com/drive/folders/137watRFEXb1gyWVGK-u2KOZ1OWiECnmU" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Abrir pasta de comprovantes no Drive
+    </a>
+  </div>
+
+  <section class="panel" aria-label="Reservas registradas">
+    <div class="panel-head"><h2>Reservas</h2><span class="meta">atualizado 22/09/2026</span></div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Hóspede</th><th>Check-in → Checkout</th><th>Coanfitriã</th><th>Valor reserva</th><th>Valor pago</th><th>Confirmação</th><th>Comprovantes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="guest">Adam Matunga N.</td>
+            <td>04/09 14:00 → 12/09 11:00<br><span class="code">8 noites</span></td>
+            <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+            <td class="num">R$ 2.206,88</td>
+            <td class="num">R$ 2.477,58<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">repasse confirmado — compensado entre 10 e 15/10</div><div class="diff-flag" style="background:var(--success-bg); color:var(--success);">+ R$ 266,72 referente ao mercado — recebido via Airbnb, comprovante enviado</div></td>
+            <td class="code">HMPACK5SES</td>
+            <td><div class="proof-links">
+              <a href="https://drive.google.com/file/d/1lja_Hlp3f3RL4Mg_HAHK_6UdmVzR2UoY/view" target="_blank" rel="noopener">↗ reserva</a>
+              <a href="https://drive.google.com/file/d/1a54TOBJPNtc4-UjN1HwicE8-FWQhjgak/view" target="_blank" rel="noopener">↗ pagamento</a>
+            </div></td>
+          </tr>
+          <tr>
+            <td class="guest">Breno Rocha De Almeida</td>
+            <td>01/09 19:00 → 02/09 15:00<br><span class="code">1 noite</span></td>
+            <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+            <td class="num">R$ 263,69</td>
+            <td class="num">R$ 263,69<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">confirmado — comprovante enviado</div></td>
+            <td class="code">—</td>
+            <td><span style="font-size:12px; color:var(--ink-faint);">comprovante enviado por Bruno (app Airbnb)</span></td>
+          </tr>
+          <tr>
+            <td class="guest">Leticia Cunha</td>
+            <td>19/11 → 23/11/2026<br><span class="code">4 noites</span></td>
+            <td>—</td>
+            <td>—</td>
+            <td class="num">R$ 967,70<br><span class="code">R$265,80×4 + limpeza R$120 − serviço R$215,50</span><div class="diff-flag" style="background:var(--surface-2); color:var(--ink-dim);">agendado — envio em 20/11</div></td>
+            <td class="code">HMN4JA9R8A</td>
+            <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — PayPal b••••s@gmail.com</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="doc-note" style="margin:16px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>Como funciona o repasse:</strong> o hóspede que faz checkout em um mês tem o valor compensado no mês seguinte. Airbnb repassa até o dia 10 do mês seguinte ao checkout; Booking.com repassa até o dia 16 do mês seguinte ao checkout. Pequenas diferenças entre o valor da reserva e o valor pago, quando aparecem, normalmente são repasse confirmado ainda sendo compensado dentro dessa janela — não são erro.</div>
+    </div>
+    <div class="doc-note" style="margin:16px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>A reserva de Breno Rocha De Almeida veio do app do Airbnb e teve o pagamento confirmado pelo Bruno (comprovante enviado), por isso já entra no total "confirmado e pago" acima. A reserva de Leticia Cunha ainda está agendada (repasse previsto para 20/11) e por isso segue separada, no total "a receber".</div>
+    </div>
+    <div class="doc-note" style="margin:10px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>Metodologia — custo de limpeza:</strong> o custo padrão de limpeza a cada troca de hóspede é R$ 152,00. Quando a taxa de limpeza que o Airbnb cobra do hóspede fica abaixo disso, a diferença é coberta pela receita da própria reserva — contabilizada como custo de contribuição, com justificativa de estratégia administrativa (ex.: reserva de R$ 400, taxa de limpeza cobrada R$ 120, custo real R$ 150 → contribuição de R$ 30 paga pela reserva). Nem todos os comprovantes financeiros das reservas estão registrados ainda, e os valores desta página podem sofrer alterações ao longo do período.</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Custos operacionais">
+    <div class="panel-head"><h2>Custos e despesas operacionais</h2><span class="meta">atualizado 07/09/2026</span></div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Data</th><th>Descrição</th><th>Valor</th><th>Forma de pagamento</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>setembro/2026</td>
+            <td>Taxa de configuração/onboarding — vistoria, inventário, fotos, manual do hóspede, criação do anúncio e enxoval (parcela 1/2)</td>
+            <td class="num">R$ 450,00</td>
+            <td class="code">abatido do repasse</td>
+          </tr>
+          <tr>
+            <td>outubro/2026</td>
+            <td>Taxa de configuração/onboarding (parcela 2/2)</td>
+            <td class="num">R$ 450,00</td>
+            <td class="code">abatido do repasse</td>
+          </tr>
+          <tr>
+            <td>07/09/2026</td>
+            <td>Fotografia profissional — Rejane Lemos (contrato 28/08)</td>
+            <td class="num">R$ 350,00</td>
+            <td class="code">pago por Rafael — 99Pay</td>
+          </tr>
+          <tr>
+            <td>31/08/2026</td>
+            <td>Limpeza pós-checkout — Leticia (permuta de vídeos)</td>
+            <td class="num">R$ 152,00</td>
+            <td class="code">padrão</td>
+          </tr>
+          <tr>
+            <td>02/09/2026</td>
+            <td>Limpeza pós-checkout — Breno Rocha De Almeida</td>
+            <td class="num">R$ 152,00</td>
+            <td class="code">padrão</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="font-weight:600;">Total</td>
+            <td class="num" style="font-weight:600;">R$ 1.554,00</td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="doc-note" style="margin:16px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>O total acima soma os valores de referência, mas nem tudo é saída de caixa de Bruno: a taxa de configuração/onboarding (R$ 900,00, 2x — R$450 em setembro e R$450 em outubro) é abatida diretamente dos repasses, a fotografia da Rejane foi paga diretamente pelo Rafael via 99Pay em 07/09 (comprovante confirmado, concluído) e as duas limpezas pós-checkout (Breno e Leticia, R$ 152,00 cada) foram pagamento padrão à equipe própria de limpeza de Bruno, do próprio bolso dele — a permuta com a Leticia foi apenas pelo serviço de produção de vídeo, não pela limpeza. A limpeza padrão por troca de hóspede (R$ 152,00, ver metodologia na seção Reservas) é feita pela equipe própria de Bruno, paga do próprio bolso dele. A limpeza referente ao checkout da reserva de Leticia Cunha (19–23/11) ainda não ocorreu — entra aqui quando acontecer. Nem todos os comprovantes de custos estão registrados ainda, e os valores podem sofrer alterações ao longo do período.</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Termos do contrato de administração">
+    <div class="panel-head"><h2>Termos do contrato de administração</h2><span class="meta">assinado 25/07/2026 · Rafael Loch Waltrick Goes ↔ Bruno</span></div>
+    <div class="panel-body">
+      <dl class="terms-grid">
+        <div class="term"><dt>Remuneração do administrador</dt><dd>20% sobre diárias + limpeza para reservas feitas pela plataforma; 25% para locações fechadas fora da plataforma, com repasse em até 5 dias úteis.</dd></div>
+        <div class="term"><dt>Prazo de repasse</dt><dd>Repasse do que vem pela plataforma até o 10º dia útil do mês seguinte.</dd></div>
+        <div class="term"><dt>Taxa de onboarding</dt><dd>R$ 900, em 2x (R$450 em setembro, R$450 em outubro), abatida diretamente dos repasses — cobre vistoria, inventário, fotos, manual do hóspede, criação do anúncio e enxoval. Sessão de fotos é cobrada à parte.</dd></div>
+        <div class="term"><dt>Autonomia de preço</dt><dd>O contrato dá ao administrador autonomia exclusiva sobre a precificação (PriceLabs ou similar) — o proprietário abre mão de contestar a estratégia adotada.</dd></div>
+        <div class="term"><dt>Uso pessoal do proprietário</dt><dd>Até 3 dias consecutivos ou 1 fim de semana por mês, com 15 dias de aviso prévio, nunca sobre reserva já confirmada.</dd></div>
+        <div class="term"><dt>Cancelamento para uso próprio</dt><dd>Cancelar uma reserva confirmada para uso do imóvel transfere ao proprietário a responsabilidade pelo reembolso do hóspede, mais multa de R$ 1.000.</dd></div>
+        <div class="term"><dt>Manutenção</dt><dd>O administrador pode autorizar até R$ 500 em manutenção sem consultar o proprietário.</dd></div>
+        <div class="term"><dt>Rescisão</dt><dd>Contrato por prazo indeterminado, aviso prévio de 60 dias para rescindir, multa de R$ 1.000 por quebra sem aviso.</dd></div>
+        <div class="term" style="grid-column:1/-1;"><dt>Fora da responsabilidade do administrador</dt><dd>Problemas estruturais, vícios ocultos, desgaste natural e casos fortuitos — excluídos explicitamente da gestão do administrador pela cláusula 2.1-d.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Documentos do imóvel">
+    <div class="panel-head"><h2>Documentos</h2><span class="meta">pasta Drive · Enredo Carioca I</span></div>
+    <div class="panel-body">
+      <div class="doc-groups">
+
+        <div class="doc-group">
+          <h3>Financeiro</h3>
+          <ul class="doc-list">
+            <li><a href="https://docs.google.com/spreadsheets/d/1zDT_9Mqo3MYmwlx9Yb18A7exLbuTqUuuvgGuU8VnHRo/edit" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v18H3z"/><path d="M3 9h18M9 21V9"/></svg><span class="fname">Controle de Reservas e Comprovantes — planilha</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/drive/folders/137watRFEXb1gyWVGK-u2KOZ1OWiECnmU" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg><span class="fname">Pasta COMPROVANTES (reserva + pagamento)</span><span class="arrow">↗</span></a></li>
+          </ul>
+        </div>
+
+        <div class="doc-group">
+          <h3>Fotos e vídeos do imóvel</h3>
+          <ul class="doc-list">
+            <li><a href="https://drive.google.com/drive/folders/1o02pBACqu8e8mlsEPGEDhZFBrl4LR0j1" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg><span class="fname">Pasta Estúdio Riachuelo — 51 fotos profissionais</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/10Sm6GciQfSMVCxtRj17ypOKLliztKMYk/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Contrato fotográfico (sessão de fotos)</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1MAsvw3QMNtWPbN-SDisOhgx2qXag6LDc/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span class="fname">Vídeo de check-in (WhatsApp) — 07/09 07:10</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1G6JLoExHHQUZMkKK_fTRrOgW2x9FNlXh/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span class="fname">Vídeo de check-in (WhatsApp) — 07/09 07:10 (2)</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/11Ra3F9mMz8MSLCt96YBXtobFCVEk9nJd/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg><span class="fname">Vídeo de check-in (WhatsApp) — 07/09 07:10 (3)</span><span class="arrow">↗</span></a></li>
+          </ul>
+        </div>
+
+        <div class="doc-group">
+          <h3>Contrato e regras</h3>
+          <ul class="doc-list">
+            <li><a href="https://drive.google.com/file/d/10Ju4-ib9AyHQh6sCQ3xhZ4YV0HuIcFwM/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Contrato de administração Airbnb (Rafael ↔ Bruno)</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1wVRZDS_WxfI6f2oDTEFqdbqZ2p6O7lCn/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Contrato de locação</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1cQ3_SstGxIeX8xDgJNMsfSGU9E4nbEy4/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Regras do apartamento (hóspedes)</span><span class="arrow">↗</span></a></li>
+          </ul>
+        </div>
+
+        <div class="doc-group">
+          <h3>Relatórios e análises</h3>
+          <ul class="doc-list">
+            <li><a href="https://drive.google.com/file/d/1-AfOGIoL3Esa5LWCdW-jrEIRiBLuY8LM/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Análise até projeção 12 meses (PDF)</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://docs.google.com/document/d/1_ykwYL8CBYuNvMTY26Fou3dmn3ChTVq7/edit" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Análise até projeção 12 meses (Word)</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1fxa92FYmOJ0Z4wAu1KnfZBfnIyy-zHyU/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Relatório de links gerais</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1gNScV6_FRUhgoYiLJSXv82LKFJ8ymA70/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Relatório de compras</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/185HAoW25SHtzsSdql7Ebgn8wtiE9Y6SR/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Relatório do enxoval</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1rzF0dUKiBGZyGf-FDFgMJXyCaFmhP31s/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Relatório de essenciais e fragrância</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1nP7oJAA3Qz80ITPOH5tEfQhU1YpkelxE/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Guia de implementação</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1OgUKfZf2aRpuGvFvXBYOm9qmNeTpNk4K/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">"De Airbnb a boutique" — material de posicionamento</span><span class="arrow">↗</span></a></li>
+          </ul>
+        </div>
+
+        <div class="doc-group">
+          <h3>Proposta original</h3>
+          <ul class="doc-list">
+            <li><a href="https://drive.google.com/file/d/1mdjNjRwzq-1JlQWHCz9YLh8TgEY7yEPU/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Proposta de administração enviada ao Rafael</span><span class="arrow">↗</span></a></li>
+            <li><a href="https://drive.google.com/file/d/1_olQdC1N-VWxKEPhf4CSwB21s4-Lktbp/view" target="_blank" rel="noopener"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><span class="fname">Enxoval mínimo — referência</span><span class="arrow">↗</span></a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="doc-note">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div>Esta lista traz todos os arquivos da pasta do Drive do Enredo Carioca I, exceto 4 documentos que pertencem a outros imóveis administrados pela em casa (Dashboard do Novo Estúdio Lapa e 3 arquivos do Catedral) — deixados de fora por não serem sobre esta unidade. Se o Rafael tiver acesso à pasta e preferir ver a lista completa sem esse filtro, é só avisar.</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Fontes: pasta <code class="inline">COMPROVANTES</code> e planilha do Google Drive do Enredo Carioca I; contrato de administração Rafael↔Bruno (Cláusula Quinta e seguintes). Esta página é republicada sempre que um novo comprovante é processado ou o contrato é revisado — nenhum valor aqui é estimado, todos vêm de comprovante ou do texto do contrato.
+  </footer>
+</div>
