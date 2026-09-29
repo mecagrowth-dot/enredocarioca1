@@ -57,6 +57,14 @@
   .panel-head .meta{font-size:12px; color:var(--ink-faint); font-family:"IBM Plex Mono", monospace;}
   .panel-body{padding:18px 20px;}
 
+  .tabs{display:flex; gap:4px; padding:4px; background:var(--surface-2); margin:16px 20px 0; border-radius:10px; width:fit-content;}
+  .tab-btn{font-family:"IBM Plex Mono", monospace; font-size:12.5px; font-weight:600; letter-spacing:.02em; padding:8px 14px; border:none; border-radius:7px; background:transparent; color:var(--ink-dim); cursor:pointer;}
+  .tab-btn.active{background:var(--surface); color:var(--ink); box-shadow:var(--shadow);}
+  .tab-btn .count{font-size:10.5px; color:var(--ink-faint); margin-left:4px;}
+  .tab-btn.active .count{color:var(--accent);}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;}
+
   .tablewrap{overflow-x:auto;}
   table{width:100%; border-collapse:collapse; font-size:13.5px; min-width:700px;}
   thead th{text-align:left; font-family:"IBM Plex Mono", monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-faint); font-weight:600; padding:10px 16px; border-bottom:1px solid var(--border); background:var(--surface-2);}
@@ -106,6 +114,42 @@
   .doc-list a .arrow{flex:none; font-family:"IBM Plex Mono", monospace; font-size:11px; color:var(--ink-faint);}
   .doc-note{display:flex; gap:10px; align-items:flex-start; background:var(--surface-2); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-top:18px; font-size:12.5px; color:var(--ink-dim); line-height:1.6;}
   .doc-note svg{flex:none; margin-top:2px; color:var(--ink-faint);}
+
+  .stock-cats{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; padding:18px 20px;}
+  .cat{background:var(--surface-2); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  .cat-head{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 15px; border-bottom:1px solid var(--border);}
+  .cat-head h3{font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:14.5px; margin:0;}
+  .cat-head .cat-count{font-family:"IBM Plex Mono", monospace; font-size:10.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em;}
+  .item-row{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:9px 15px; border-bottom:1px solid var(--border);}
+  .item-row:last-child{border-bottom:none;}
+  .item-name{font-size:13px;}
+  .item-name .note{display:block; font-size:11px; color:var(--ink-faint); margin-top:2px;}
+  .qty{flex:none; display:flex; align-items:baseline; gap:4px; font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums; background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:3px 8px 3px 10px;}
+  .qty .num{font-size:13.5px; font-weight:600;}
+  .qty .unit{font-size:9.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.03em;}
+  .qty.low{background:var(--warning-bg); border-color:transparent;}
+  .qty.low .num{color:var(--warning);}
+
+  .steps{list-style:none; margin:0; padding:18px 20px; display:flex; flex-direction:column; gap:2px;}
+  .step{display:flex; align-items:flex-start; gap:13px; padding:10px 2px; border-bottom:1px dashed var(--border);}
+  .step:last-child{border-bottom:none;}
+  .step .idx{flex:none; width:26px; height:26px; border-radius:50%; background:var(--surface-2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono", monospace; font-size:12px; font-weight:600; color:var(--ink-dim);}
+  .step .txt{font-size:13.5px; line-height:1.55; padding-top:4px;}
+
+  .settle{display:flex; flex-direction:column; padding:8px 20px 2px;}
+  .settle-row{display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:11px 0; border-bottom:1px dashed var(--border); font-size:14px;}
+  .settle-row .v{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap;}
+  .settle-row .v.neg{color:var(--critical);}
+  .settle-row.subtotal{font-weight:600; border-bottom:1px solid var(--border);}
+  .settle-row.final{margin:10px 0 16px; padding:14px 16px; background:var(--accent-soft); border-radius:10px; border-bottom:none; font-weight:700; font-size:15px;}
+  .settle-row.final .v{color:var(--accent); font-size:18px;}
+
+  .direct-pay{margin:16px 20px 0; background:var(--warning-bg); border:1px solid var(--border); border-radius:12px; overflow:hidden;}
+  .direct-pay-head{padding:10px 16px; border-bottom:1px solid var(--border);}
+  .direct-pay-head .lbl{font-family:"IBM Plex Mono", monospace; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--warning);}
+  .direct-pay-head .sub{display:block; font-size:11.5px; color:var(--ink-dim); margin-top:3px;}
+  .direct-pay-row{display:flex; justify-content:space-between; align-items:baseline; gap:14px; padding:12px 16px; font-size:13px;}
+  .direct-pay-row .v{font-family:"IBM Plex Mono", monospace; font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap;}
 </style>
 
 <div class="wrap">
@@ -123,10 +167,25 @@
     <p>Unidade 309, Rua do Riachuelo 201, Centro/Lapa — Rio de Janeiro. Tudo que o Rafael precisa para acompanhar a gestão do apartamento em um só lugar: financeiro, comprovantes, arquivos e os termos do contrato de administração.</p>
   </header>
 
+  <section class="panel" aria-label="Fechamento do mês">
+    <div class="panel-head"><h2>Fechamento do mês — setembro/2026</h2><span class="meta">preliminar · atualizado 28/09/2026</span></div>
+    <div class="settle">
+      <div class="settle-row"><span>Faturamento confirmado do mês vigente</span><span class="v">R$ 3.099,82</span></div>
+      <div class="settle-row"><span>Custos operacionais</span><span class="v neg">− R$ 1.435,00</span></div>
+      <div class="settle-row subtotal"><span>Lucro líquido</span><span class="v">R$ 1.664,82</span></div>
+      <div class="settle-row"><span>Repasse do Bruno — comissão de 20% sobre o lucro líquido</span><span class="v neg">− R$ 332,96</span></div>
+      <div class="settle-row final"><span>Repasse via Pix ao proprietário</span><span class="v">R$ 1.331,86</span></div>
+    </div>
+    <div class="doc-note" style="margin:0 20px 18px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>Este fechamento é preliminar: usa só o faturamento já confirmado e recebido este mês (Adam, Breno e Michele, R$ 3.099,82 — ver seção Reservas). Os R$ 2.413,02 ainda "a receber" (Paulo Victor, Leticia e Charlotte) entram no fechamento do mês em que o repasse de cada um se confirmar. O lucro líquido é o faturamento confirmado menos os custos operacionais do período (ver seção Custos e despesas operacionais); a comissão de 20% do Bruno incide sobre esse lucro líquido, e o restante é o valor repassado ao Rafael via Pix.</div>
+    </div>
+  </section>
+
   <div class="stats-row">
-    <div class="stat"><div class="n">3</div><div class="l">reservas registradas</div></div>
-    <div class="stat"><div class="n">R$ 2.741,27</div><div class="l">confirmado e pago (com comprovante)</div></div>
-    <div class="stat"><div class="n">R$ 967,70</div><div class="l">a receber — agendado p/ 20/11</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">reservas registradas</div></div>
+    <div class="stat"><div class="n">R$ 3.099,82</div><div class="l">confirmado e pago (mês vigente)</div></div>
+    <div class="stat"><div class="n">R$ 2.413,02</div><div class="l">a receber (bruto) — repasse pendente</div></div>
   </div>
 
   <div class="cta-row">
@@ -141,45 +200,93 @@
   </div>
 
   <section class="panel" aria-label="Reservas registradas">
-    <div class="panel-head"><h2>Reservas</h2><span class="meta">atualizado 22/09/2026</span></div>
-    <div class="tablewrap">
-      <table>
-        <thead>
-          <tr><th>Hóspede</th><th>Check-in → Checkout</th><th>Coanfitriã</th><th>Valor reserva</th><th>Valor pago</th><th>Confirmação</th><th>Comprovantes</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="guest">Adam Matunga N.</td>
-            <td>04/09 14:00 → 12/09 11:00<br><span class="code">8 noites</span></td>
-            <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
-            <td class="num">R$ 2.206,88</td>
-            <td class="num">R$ 2.477,58<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">repasse confirmado — compensado entre 10 e 15/10</div><div class="diff-flag" style="background:var(--success-bg); color:var(--success);">+ R$ 266,72 referente ao mercado — recebido via Airbnb, comprovante enviado</div></td>
-            <td class="code">HMPACK5SES</td>
-            <td><div class="proof-links">
-              <a href="https://drive.google.com/file/d/1lja_Hlp3f3RL4Mg_HAHK_6UdmVzR2UoY/view" target="_blank" rel="noopener">↗ reserva</a>
-              <a href="https://drive.google.com/file/d/1a54TOBJPNtc4-UjN1HwicE8-FWQhjgak/view" target="_blank" rel="noopener">↗ pagamento</a>
-            </div></td>
-          </tr>
-          <tr>
-            <td class="guest">Breno Rocha De Almeida</td>
-            <td>01/09 19:00 → 02/09 15:00<br><span class="code">1 noite</span></td>
-            <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
-            <td class="num">R$ 263,69</td>
-            <td class="num">R$ 263,69<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">confirmado — comprovante enviado</div></td>
-            <td class="code">—</td>
-            <td><span style="font-size:12px; color:var(--ink-faint);">comprovante enviado por Bruno (app Airbnb)</span></td>
-          </tr>
-          <tr>
-            <td class="guest">Leticia Cunha</td>
-            <td>19/11 → 23/11/2026<br><span class="code">4 noites</span></td>
-            <td>—</td>
-            <td>—</td>
-            <td class="num">R$ 967,70<br><span class="code">R$265,80×4 + limpeza R$120 − serviço R$215,50</span><div class="diff-flag" style="background:var(--surface-2); color:var(--ink-dim);">agendado — envio em 20/11</div></td>
-            <td class="code">HMN4JA9R8A</td>
-            <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — PayPal b••••s@gmail.com</span></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="panel-head"><h2>Reservas</h2><span class="meta">atualizado 28/09/2026</span></div>
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab-btn active" id="tab-btn-vigente" role="tab" aria-selected="true" aria-controls="tab-vigente" onclick="showResTab('vigente')">Mês vigente — setembro/2026<span class="count">· 4</span></button>
+      <button type="button" class="tab-btn" id="tab-btn-futuras" role="tab" aria-selected="false" aria-controls="tab-futuras" onclick="showResTab('futuras')">Reservas futuras<span class="count">· 2</span></button>
+    </div>
+    <div class="tab-panel active" id="tab-vigente" role="tabpanel" aria-labelledby="tab-btn-vigente">
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Hóspede</th><th>Check-in → Checkout</th><th>Coanfitriã</th><th>Valor reserva</th><th>Valor pago</th><th>Confirmação</th><th>Comprovantes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="guest">Adam Matunga N.</td>
+              <td>04/09 14:00 → 12/09 11:00<br><span class="code">8 noites</span></td>
+              <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+              <td class="num">R$ 2.206,88</td>
+              <td class="num">R$ 2.477,58<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">repasse confirmado — compensado entre 10 e 15/10</div><div class="diff-flag" style="background:var(--success-bg); color:var(--success);">+ R$ 266,72 referente ao mercado — recebido via Airbnb, comprovante enviado</div></td>
+              <td class="code">HMPACK5SES</td>
+              <td><div class="proof-links">
+                <a href="https://drive.google.com/file/d/1lja_Hlp3f3RL4Mg_HAHK_6UdmVzR2UoY/view" target="_blank" rel="noopener">↗ reserva</a>
+                <a href="https://drive.google.com/file/d/1a54TOBJPNtc4-UjN1HwicE8-FWQhjgak/view" target="_blank" rel="noopener">↗ pagamento</a>
+              </div></td>
+            </tr>
+            <tr>
+              <td class="guest">Breno Rocha De Almeida</td>
+              <td>01/09 19:00 → 02/09 15:00<br><span class="code">1 noite</span></td>
+              <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+              <td class="num">R$ 263,69</td>
+              <td class="num">R$ 263,69<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">confirmado — comprovante enviado</div></td>
+              <td class="code">—</td>
+              <td><span style="font-size:12px; color:var(--ink-faint);">comprovante enviado por Bruno (app Airbnb)</span></td>
+            </tr>
+            <tr>
+              <td class="guest">Michele Sabino</td>
+              <td>a confirmar<br><span class="code">2 noites · checkout já ocorrido</span></td>
+              <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+              <td class="num">R$ 358,55</td>
+              <td class="num">R$ 358,55<div class="diff-flag" style="background:var(--success-bg); color:var(--success);">confirmado — recebido</div></td>
+              <td class="code">—</td>
+              <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — repasse recebido</span></td>
+            </tr>
+            <tr>
+              <td class="guest">Paulo Victor</td>
+              <td>a confirmar<br><span class="code">2 noites · estadia em andamento</span></td>
+              <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+              <td class="num">R$ 274,81</td>
+              <td class="num">—<div class="diff-flag" style="background:var(--surface-2); color:var(--ink-dim);">estadia em andamento — checkout ainda não ocorreu, entra no repasse do próximo ciclo</div></td>
+              <td class="code">—</td>
+              <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — status "em andamento" (não entra no fechamento atual)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="tab-panel" id="tab-futuras" role="tabpanel" aria-labelledby="tab-btn-futuras">
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr><th>Hóspede</th><th>Check-in → Checkout</th><th>Coanfitriã</th><th>Valor reserva</th><th>Valor pago</th><th>Confirmação</th><th>Comprovantes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="guest">Leticia Cunha</td>
+              <td>19/11 → 23/11/2026<br><span class="code">4 noites</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td class="num">R$ 1.183,20<br><span class="code">R$265,80×4 + limpeza R$120 (bruto)</span><div class="diff-flag" style="background:var(--surface-2); color:var(--ink-dim);">a receber — repasse após o check-in de novembro</div></td>
+              <td class="code">HMN4JA9R8A</td>
+              <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — PayPal b••••s@gmail.com — reserva registrada, repasse pendente</span></td>
+            </tr>
+            <tr>
+              <td class="guest">Charlotte</td>
+              <td>19/10 14:00 → 25/10 11:00<br><span class="code">6 noites</span></td>
+              <td>Barbara Magalhaes Cady<br><span class="code">Babi Cady</span></td>
+              <td class="num">R$ 955,01</td>
+              <td class="num">R$ 955,01<div class="diff-flag" style="background:var(--surface-2); color:var(--ink-dim);">a receber — repasse após o check-in de outubro</div></td>
+              <td class="code">HMTYRE5ME3</td>
+              <td><span style="font-size:12px; color:var(--ink-faint);">via app Airbnb — reserva confirmada em 28/09, chega em 21 dias</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="doc-note" style="margin:16px 20px 0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <div>Reservas com check-in fora do mês vigente (setembro/2026) ficam nesta aba só para acompanhamento. O valor delas soma no total "a receber" do topo da página (já que ainda não foi repassado), mas não entra no fechamento deste ciclo — isso só acontece no mês em que o check-in efetivamente ocorrer.</div>
+      </div>
     </div>
     <div class="doc-note" style="margin:16px 20px 0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -187,7 +294,15 @@
     </div>
     <div class="doc-note" style="margin:16px 20px 0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <div>A reserva de Breno Rocha De Almeida veio do app do Airbnb e teve o pagamento confirmado pelo Bruno (comprovante enviado), por isso já entra no total "confirmado e pago" acima. A reserva de Leticia Cunha ainda está agendada (repasse previsto para 20/11) e por isso segue separada, no total "a receber".</div>
+      <div><strong>Repasse deste ciclo:</strong> via Airbnb — as reservas de Adam Matunga N., Breno Rocha De Almeida e Michele Sabino já estão confirmadas e recebidas. Não houve reserva via Booking.com neste período, então não há repasse Booking.com neste ciclo. As demais ficam em "a receber": Paulo Victor (estadia ainda em andamento) e Leticia Cunha e Charlotte, cujo check-in é em novembro e outubro — todas entram no fechamento do mês em que a estadia efetivamente se completar.</div>
+    </div>
+    <div class="doc-note" style="margin:16px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div><strong>Como a comissão de 20% é calculada:</strong> não é descontada reserva por reserva — é aplicada sobre o valor total do repasse no fechamento de cada mês, depois de somados todos os custos do período (onboarding, limpezas etc., ver seção Custos e despesas operacionais), porque é só no fechamento que dá pra ver todos os custos referentes ao mês vigente. Por isso os valores de reserva desta tabela aparecem brutos, sem desconto de comissão.</div>
+    </div>
+    <div class="doc-note" style="margin:16px 20px 0;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>As reservas de Adam Matunga N., Breno Rocha De Almeida e Michele Sabino já têm o pagamento confirmado e recebido, por isso somam no total "confirmado e pago" acima. As demais somam em "a receber": Paulo Victor (estadia em andamento, checkout ainda não ocorreu) e Leticia Cunha e Charlotte, reservas futuras com check-in em novembro e outubro.</div>
     </div>
     <div class="doc-note" style="margin:10px 20px 0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
@@ -196,7 +311,7 @@
   </section>
 
   <section class="panel" aria-label="Custos operacionais">
-    <div class="panel-head"><h2>Custos e despesas operacionais</h2><span class="meta">atualizado 07/09/2026</span></div>
+    <div class="panel-head"><h2>Custos e despesas operacionais</h2><span class="meta">atualizado 28/09/2026</span></div>
     <div class="tablewrap">
       <table>
         <thead>
@@ -208,18 +323,6 @@
             <td>Taxa de configuração/onboarding — vistoria, inventário, fotos, manual do hóspede, criação do anúncio e enxoval (parcela 1/2)</td>
             <td class="num">R$ 450,00</td>
             <td class="code">abatido do repasse</td>
-          </tr>
-          <tr>
-            <td>outubro/2026</td>
-            <td>Taxa de configuração/onboarding (parcela 2/2)</td>
-            <td class="num">R$ 450,00</td>
-            <td class="code">abatido do repasse</td>
-          </tr>
-          <tr>
-            <td>07/09/2026</td>
-            <td>Fotografia profissional — Rejane Lemos (contrato 28/08)</td>
-            <td class="num">R$ 350,00</td>
-            <td class="code">pago por Rafael — 99Pay</td>
           </tr>
           <tr>
             <td>31/08/2026</td>
@@ -240,16 +343,116 @@
             <td class="code">padrão</td>
           </tr>
           <tr>
+            <td>25/09/2026</td>
+            <td>Compras loja de doces — reposição do mercadinho, feita com o Samuel (R$200,00 de produto + R$5,00 de etiqueta)</td>
+            <td class="num">R$ 205,00</td>
+            <td class="code">próprio bolso — Bruno</td>
+          </tr>
+          <tr>
+            <td>28/09/2026</td>
+            <td>Limpeza especial — Samuel Douglas G. Martins (2 diárias: organização do mercado e finalização do apartamento — limpeza de copos e organização do baú — + diária de limpeza padrão)</td>
+            <td class="num">R$ 324,00</td>
+            <td class="code">Pix — Nubank</td>
+          </tr>
+          <tr>
             <td colspan="2" style="font-weight:600;">Total</td>
-            <td class="num" style="font-weight:600;">R$ 1.706,00</td>
+            <td class="num" style="font-weight:600;">R$ 1.435,00</td>
             <td></td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div class="direct-pay">
+      <div class="direct-pay-head"><span class="lbl">Pagamento feito diretamente pelo Rafael</span><span class="sub">Registro informativo — não entra no cálculo de custos de Bruno nem no abatimento do repasse</span></div>
+      <div class="direct-pay-row"><span>Fotografia profissional — Rejane Lemos (contrato 28/08), paga em 07/09/2026 via 99Pay</span><span class="v">R$ 350,00</span></div>
+    </div>
     <div class="doc-note" style="margin:16px 20px 0;">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-      <div>O total acima soma os valores de referência, mas nem tudo é saída de caixa de Bruno: a taxa de configuração/onboarding (R$ 900,00, 2x — R$450 em setembro e R$450 em outubro) é abatida diretamente dos repasses, a fotografia da Rejane foi paga diretamente pelo Rafael via 99Pay em 07/09 (comprovante confirmado, concluído) e as três limpezas pós-checkout (Breno, Leticia e Adam, R$ 152,00 cada) foram pagamento padrão à equipe própria de limpeza de Bruno, do próprio bolso dele — a permuta com a Leticia foi apenas pelo serviço de produção de vídeo, não pela limpeza. A limpeza padrão por troca de hóspede (R$ 152,00, ver metodologia na seção Reservas) é feita pela equipe própria de Bruno, paga do próprio bolso dele. A limpeza referente ao checkout da reserva de Leticia Cunha (19–23/11) ainda não ocorreu — entra aqui quando acontecer. Nem todos os comprovantes de custos estão registrados ainda, e os valores podem sofrer alterações ao longo do período.</div>
+      <div>O total acima soma apenas os valores que saem do caixa de Bruno este mês: a parcela de setembro da taxa de configuração/onboarding (R$ 450,00, primeira das 2x — a de outubro entra aqui só quando acontecer), as três limpezas pós-checkout padrão (Breno, Leticia e Adam, R$ 152,00 cada), a compra de reposição do mercadinho na loja de doces (R$ 205,00, feita com o Samuel em 25/09 — R$200,00 de produto + R$5,00 de etiqueta) e o pagamento ao Samuel (R$ 324,00, Pix de 28/09, comprovante confirmado) referente a 2 diárias de serviço — organização do mercado e finalização do apartamento (limpeza de copos, organização do baú) e uma diária de limpeza padrão, lançadas em conjunto por terem sido pagas em uma única transferência. Tudo isso sai do próprio bolso de Bruno — a permuta com a Leticia foi apenas pelo serviço de produção de vídeo, não pela limpeza. A fotografia da Rejane (R$ 350,00, acima) é um pagamento feito pelo próprio Rafael, direto ao fornecedor — não aparece nesta tabela nem soma neste total, e não é abatida do repasse de forma alguma. A limpeza referente ao checkout da reserva de Leticia Cunha (19–23/11) ainda não ocorreu — entra aqui quando acontecer. Nem todos os comprovantes de custos estão registrados ainda, e os valores podem sofrer alterações ao longo do período.</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Estoque do mercado">
+    <div class="panel-head"><h2>Estoque do mercado</h2><span class="meta">atualizado 28/09/2026</span></div>
+    <div class="stats-row" style="margin:18px 20px 0;">
+      <div class="stat"><div class="n">27</div><div class="l">itens no estoque</div></div>
+      <div class="stat"><div class="n">183</div><div class="l">unidades contadas</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">categorias</div></div>
+    </div>
+    <div class="stock-cats">
+      <div class="cat">
+        <div class="cat-head"><h3>Salgadinhos</h3><span class="cat-count">8 itens</span></div>
+        <div class="item-row"><div class="item-name">Pringles 35g</div><div class="qty"><span class="num">4</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Pringles grande</div><div class="qty"><span class="num">3</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Fandangos 20g</div><div class="qty"><span class="num">5</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Doritos 32g</div><div class="qty"><span class="num">5</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Ruffles grande</div><div class="qty low"><span class="num">2</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Biscoito Piraquê</div><div class="qty low"><span class="num">2</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Amendoim</div><div class="qty"><span class="num">10</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Amendoim sem pele</div><div class="qty"><span class="num">3</span><span class="unit">un</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Doces &amp; chocolates</h3><span class="cat-count">4 itens</span></div>
+        <div class="item-row"><div class="item-name">Bombom</div><div class="qty"><span class="num">40</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Fini</div><div class="qty"><span class="num">32</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Sonho de Valsa</div><div class="qty"><span class="num">9</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Bala 7Belo</div><div class="qty low"><span class="num">2</span><span class="unit">pct</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Bebidas</h3><span class="cat-count">5 itens</span></div>
+        <div class="item-row"><div class="item-name">Coca-Cola normal</div><div class="qty"><span class="num">6</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Coca-Cola zero</div><div class="qty"><span class="num">6</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Fanta guaraná</div><div class="qty"><span class="num">6</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Cerveja Stella</div><div class="qty low"><span class="num">4</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Mate Leão copo</div><div class="qty low"><span class="num">4</span><span class="unit">un</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Miojo</h3><span class="cat-count">2 itens</span></div>
+        <div class="item-row"><div class="item-name">Miojo sabor galinha</div><div class="qty low"><span class="num">3</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Miojo sabor carne</div><div class="qty low"><span class="num">3</span><span class="unit">un</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Chicletes &amp; balas de menta</h3><span class="cat-count">4 itens</span></div>
+        <div class="item-row"><div class="item-name">Trident Max</div><div class="qty"><span class="num">13</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Halls variadas</div><div class="qty"><span class="num">5</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Trident sem açúcar melancia</div><div class="qty low"><span class="num">4</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Trident sem açúcar menta</div><div class="qty low"><span class="num">4</span><span class="unit">un</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Café</h3><span class="cat-count">1 item</span></div>
+        <div class="item-row"><div class="item-name">Cápsula expresso<span class="note">3 caixas fechadas + 3 unidades avulsas</span></div><div class="qty"><span class="num">3+3</span><span class="unit">cx/un</span></div></div>
+      </div>
+      <div class="cat">
+        <div class="cat-head"><h3>Higiene pessoal</h3><span class="cat-count">3 itens</span></div>
+        <div class="item-row"><div class="item-name">Escova de dentes</div><div class="qty"><span class="num">4</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Absorvente<span class="note">unidades expostas</span></div><div class="qty low"><span class="num">4</span><span class="unit">un</span></div></div>
+        <div class="item-row"><div class="item-name">Pasta de dente</div><div class="qty low"><span class="num">2</span><span class="unit">un</span></div></div>
+      </div>
+    </div>
+    <div class="doc-note" style="margin:0 20px 18px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>Itens com fundo destacado estão com 2 a 4 unidades — os mais próximos de precisar reposição. Esta é uma contagem pontual (28/09/2026); atualizada a cada nova organização do mercadinho, como a feita pelo Samuel em 28/09.</div>
+    </div>
+  </section>
+
+  <section class="panel" aria-label="Manual operacional de limpeza">
+    <div class="panel-head"><h2>Manual operacional — Limpeza</h2><span class="meta">Rua do Riachuelo, 201 · em elaboração</span></div>
+    <ol class="steps">
+      <li class="step"><span class="idx">1</span><span class="txt">Gravar vídeo de como o apartamento se encontra logo após o checkout, antes de começar a limpeza.</span></li>
+      <li class="step"><span class="idx">2</span><span class="txt">Conferir o funcionamento dos eletrodomésticos.</span></li>
+      <li class="step"><span class="idx">3</span><span class="txt">Conferir o estoque do mercadinho.</span></li>
+      <li class="step"><span class="idx">4</span><span class="txt">Recolher a roupa de cama e colocar para lavar.</span></li>
+      <li class="step"><span class="idx">5</span><span class="txt">Varrer o chão, varrer embaixo do sofá e tirar o pó dos móveis.</span></li>
+      <li class="step"><span class="idx">6</span><span class="txt">Passar pano no apartamento inteiro.</span></li>
+      <li class="step"><span class="idx">7</span><span class="txt">Recolher as roupas da lavadora e colocar na secadora.</span></li>
+      <li class="step"><span class="idx">8</span><span class="txt">Repor o estoque do mercadinho, caso necessário.</span></li>
+      <li class="step"><span class="idx">9</span><span class="txt">Arrumar a cama.</span></li>
+      <li class="step"><span class="idx">10</span><span class="txt">Passar cheirinho no apartamento, ao redor da cama e na cortina.</span></li>
+      <li class="step"><span class="idx">11</span><span class="txt">Gravar vídeo de como ficou a entrega do apartamento, ao final da limpeza.</span></li>
+    </ol>
+    <div class="doc-note" style="margin:0 20px 18px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>Este é o início do manual operacional de limpeza da Rua do Riachuelo — a sequência de passos que a equipe segue a cada troca de hóspede. Mais etapas e checklists (ex.: manutenção, vistoria) devem ser adicionados aqui conforme forem formalizados.</div>
     </div>
   </section>
 
@@ -338,3 +541,18 @@
     Fontes: pasta <code class="inline">COMPROVANTES</code> e planilha do Google Drive do Enredo Carioca I; contrato de administração Rafael↔Bruno (Cláusula Quinta e seguintes). Esta página é republicada sempre que um novo comprovante é processado ou o contrato é revisado — nenhum valor aqui é estimado, todos vêm de comprovante ou do texto do contrato.
   </footer>
 </div>
+<script>
+function showResTab(name){
+  var tabs = {vigente:'tab-vigente', futuras:'tab-futuras'};
+  var btns = {vigente:'tab-btn-vigente', futuras:'tab-btn-futuras'};
+  Object.keys(tabs).forEach(function(key){
+    var panel = document.getElementById(tabs[key]);
+    var btn = document.getElementById(btns[key]);
+    if(!panel || !btn) return;
+    var active = key === name;
+    panel.classList.toggle('active', active);
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+}
+</script>
